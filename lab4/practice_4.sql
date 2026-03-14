@@ -1,0 +1,32 @@
+CREATE TABLE SERVER (
+    server_id   NUMBER(10) NOT NULL,
+    server_name VARCHAR2(100) NOT NULL,
+    CONSTRAINT PK_SERVER PRIMARY KEY (server_id)
+);
+
+CREATE TABLE USER_ACCOUNT (
+    user_id    NUMBER(10) NOT NULL,
+    user_name  VARCHAR2(100) NOT NULL,
+    server_id  NUMBER(10) NOT NULL,
+    CONSTRAINT PK_USER_ACCOUNT PRIMARY KEY (user_id),
+    CONSTRAINT FK_USER_ACCOUNT_SERVER FOREIGN KEY (server_id)
+        REFERENCES SERVER (server_id)
+);
+
+CREATE TABLE MESSAGE (
+    message_id   NUMBER(10) NOT NULL,
+    message_date DATE NOT NULL,
+    subject      VARCHAR2(200),
+    text         VARCHAR2(4000),
+    CONSTRAINT PK_MESSAGE PRIMARY KEY (message_id)
+);
+
+CREATE TABLE USER_MESSAGE (
+    user_id    NUMBER(10) NOT NULL,
+    message_id NUMBER(10) NOT NULL,
+    CONSTRAINT PK_USER_MESSAGE PRIMARY KEY (user_id, message_id),
+    CONSTRAINT FK_USER_MESSAGE_USER FOREIGN KEY (user_id)
+        REFERENCES USER_ACCOUNT (user_id),
+    CONSTRAINT FK_USER_MESSAGE_MESSAGE FOREIGN KEY (message_id)
+        REFERENCES MESSAGE (message_id)
+);
